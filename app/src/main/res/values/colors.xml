@@ -11,9 +11,12 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FFFFFFFF</color>
     <color name="yelow_fondo">#DC8620</color>
-    <color name="yelow_fondo_disabled">#f7e2c9</color>
-    <color name="colorInput">#f7f7f9</color>
+    <color name="yelow_fondo_disabled">#95897A</color>
+    <color name="yelow_fondo_2">#ffc49c</color>
+    <color name="colorInput">#f0f0f0</color>
     <color name="color_app_theme">#DC8620</color>
+    <color name="color_palceholder">#979595</color>
+    <color name="color_texto">#777777</color>
 
 
 </resources>

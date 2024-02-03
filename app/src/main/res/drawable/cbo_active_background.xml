@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/colorInput"/>
+    <corners android:radius="6dp"/>
+    <stroke android:color="@color/yelow_fondo"
+        android:width="1.5dp"/>
+    <item android:drawable="@drawable/ic_baseline_keyboard_arrow_down_24" />
+</shape> -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item >
+        <shape
+            android:layout_width="match_parent"
+            android:shape="rectangle">
+            <solid android:color="@color/colorInput" />
+            <solid android:textColor="@color/color_palceholder" />
+            <corners android:radius="6dp" />
+            <stroke
+                android:width="1.5dp"
+                android:color="@color/yelow_fondo"
+                 />
+        </shape>
+
+    </item>
+    <!-- <item android:drawable="@drawable/ic_baseline_keyboard_arrow_down_24"
+        android:gravity="end"
+        android:layout_width="match_parent"
+        android:color="@color/color_palceholder"/> -->
+
+</layer-list>

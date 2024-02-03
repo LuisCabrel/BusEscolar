@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">BusEscolar</string>
     <string-array name="opciones">
+        <item>Seleccione</item>
         <item>Dni</item>
         <item>CE</item>
         <item>Pasaporte</item>
