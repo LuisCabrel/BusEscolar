@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+<group>
+    <item android:id="@+id/nav_panel"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Panel"/>
+    <item android:id="@+id/nav_perfil"
+        android:icon="@drawable/ic_chofer"
+        android:title="Perfil"/>
+    <item android:id="@+id/nav_bus"
+        android:icon="@drawable/ic_bus_24"
+        android:title="Bus"/>
+    <item android:id="@+id/nav_alumno"
+        android:icon="@drawable/ic_alumno"
+        android:title="Pasajeros"/>
+    <item android:id="@+id/nav_ida"
+        android:icon="@drawable/ic_location"
+        android:title="Ruta Ida"/>
+    <item android:id="@+id/nav_retorno"
+        android:icon="@drawable/ic_location"
+        android:title="Ruta Retorno"/>
+</group>
+    <!--<item android:title="titulo 3">
+        <menu>
+            <item android:id="@+id/nav_item_4"
+                android:icon="@drawable/ic_baseline_home_24"
+                android:title="Inicio4"/>
+        </menu>
+    </item> -->
+</menu>

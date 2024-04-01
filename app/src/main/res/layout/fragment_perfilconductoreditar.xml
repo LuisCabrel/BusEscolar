@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PerfilconductoreditarFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/color_marino"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:background="@color/color_marino"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="55dp">
+
+                            <TextView
+                                android:id="@+id/textView4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-medium"
+                                android:paddingLeft="25dp"
+                                android:paddingTop="50dp"
+                                android:text="Editar\nCoductor"
+                                android:textColor="#ffffff"
+                                android:textSize="40sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/imageView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="152dp"
+                                android:layout_marginEnd="-50dp"
+                                android:accessibilityLiveRegion="none"
+                                android:adjustViewBounds="false"
+                                android:cropToPadding="false"
+                                app:srcCompat="@drawable/img_conductor" />
+
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="-60dp"
+                        app:cardBackgroundColor="#ffffff"
+                        app:cardCornerRadius="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/txtNombresConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="45dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="40dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/edit_text_background"
+                                android:ems="10"
+                                android:hint="Ingrese nombres"
+                                android:inputType="textPersonName"
+                                android:paddingLeft="5dp"
+                                android:textColor="@color/color_texto"
+                                android:textCursorDrawable="@drawable/cursor"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <EditText
+                                android:id="@+id/txtApellidosConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="45dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/edit_text_background"
+                                android:ems="10"
+                                android:hint="Ingrese apellidos"
+                                android:inputType="textPersonName"
+                                android:paddingLeft="5dp"
+                                android:textColor="@color/color_texto"
+                                android:textCursorDrawable="@drawable/cursor"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtNombresConductor" />
+
+                            <Spinner
+                                android:id="@+id/cbo_tipoDocConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="45dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/cbo_active_background"
+                                android:paddingLeft="5dp"
+                                android:spinnerMode="dialog"
+                                android:textColor="@color/color_texto"
+
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtApellidosConductor" />
+
+                            <EditText
+                                android:id="@+id/txtDocumentoConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="45dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/edit_text_background"
+                                android:ems="10"
+                                android:hint="# Documento"
+                                android:inputType="textPersonName"
+                                android:paddingLeft="5dp"
+                                android:textColor="@color/color_texto"
+                                android:textCursorDrawable="@drawable/cursor"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/cbo_tipoDocConductor" />
+
+                            <EditText
+                                android:id="@+id/txtDireccionConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="45dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/edit_text_background"
+                                android:ems="10"
+                                android:hint="Direccion"
+                                android:inputType="textPersonName"
+                                android:paddingLeft="5dp"
+                                android:textColor="@color/color_texto"
+                                android:textCursorDrawable="@drawable/cursor"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtDocumentoConductor" />
+
+                            <EditText
+                                android:id="@+id/txtCorreoConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="45dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/edit_text_background"
+                                android:ems="10"
+                                android:hint="Correo electronico"
+                                android:inputType="textEmailAddress"
+                                android:paddingLeft="5dp"
+                                android:textColor="@color/color_texto"
+                                android:textCursorDrawable="@drawable/cursor"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtDireccionConductor" />
+
+                            <EditText
+                                android:id="@+id/txtCelularConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="45dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/edit_text_background"
+                                android:ems="10"
+                                android:hint="Celular"
+                                android:inputType="phone"
+                                android:paddingLeft="5dp"
+                                android:textCursorDrawable="@drawable/cursor"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtCorreoConductor" />
+
+                            <Button
+                                android:id="@+id/btnFotoPerfilConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/btn_background"
+                                android:drawableLeft="@drawable/ic_baseline_photo_camera_24"
+                                android:paddingLeft="5dp"
+                                android:text="Foto Perfil"
+                                android:textColor="#ffffff"
+                                app:cornerRadius="16dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtCelularConductor" />
+
+                            <ImageView
+                                android:id="@+id/imgPerfilConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="150dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:focusableInTouchMode="false"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.558"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/btnFotoPerfilConductor"
+                                app:srcCompat="@drawable/ico_perfil" />
+
+                            <Button
+                                android:id="@+id/btnFotoLicenciaConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/btn_background"
+                                android:drawableLeft="@drawable/ic_baseline_photo_camera_24"
+                                android:paddingLeft="5dp"
+                                android:text="Foto Licencia"
+                                android:textColor="#ffffff"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imgPerfilConductor" />
+
+                            <ImageView
+                                android:id="@+id/imgLicenciaConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="150dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:adjustViewBounds="false"
+                                android:cropToPadding="false"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/btnFotoLicenciaConductor"
+                                app:srcCompat="@drawable/licencia" />
+
+                            <Button
+                                android:id="@+id/btnEditarRegistroConductor"
+                                android:layout_width="0dp"
+                                android:layout_height="47dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="40dp"
+                                android:background="@drawable/btn_background_orange"
+                                android:text="Guardar"
+                                android:textColor="#FFFFFF"
+                                app:cornerRadius="16dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imgLicenciaConductor"
+                                app:layout_constraintVertical_bias="0.146" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

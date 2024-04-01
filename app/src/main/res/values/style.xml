@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/color_app_theme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash</item>
@@ -12,5 +14,34 @@
 
     <style name="styleSelect" parent="Base.Widget.AppCompat.Spinner">
         <item name="android:textColor">@color/color_palceholder</item>
+    </style>
+
+    <style name="AlertDialogButtonSuccess" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccent</item> <!-- Cambia color del texto -->
+        <item name="android:background">@color/color_success</item> <!-- Cambia el fondo del botón -->
+    </style>
+
+    <style name="AlertDialogButtonWarning" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccent</item> <!-- Cambia color del texto -->
+        <item name="android:background">@color/color_warning</item> <!-- Cambia el fondo del botón -->
+    </style>
+
+    <style name="AlertDialogButtonError" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccent</item> <!-- Cambia color del texto -->
+        <item name="android:background">@color/color_error</item> <!-- Cambia el fondo del botón -->
+    </style>
+
+    <style name="ImagenRedondeada">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="cornerSizeTopLeft">0%</item>
+        <item name="cornerSizeTopRight">0%</item>
+    </style>
+    <style name="ImagenRedondeada2">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="cornerSizeTopLeft">50%</item>
+        <item name="cornerSizeTopRight">50%</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

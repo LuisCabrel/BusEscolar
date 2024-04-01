@@ -37,6 +37,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,6 +58,8 @@
                 android:hint="Ingrese su correo"
                 android:inputType="textPersonName"
                 android:paddingLeft="5dp"
+                android:textColor="@color/color_texto"
+                android:textCursorDrawable="@drawable/cursor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -75,18 +78,20 @@
                 android:hint="Ingrese su contraseña"
                 android:inputType="textPassword"
                 android:paddingLeft="5dp"
+                android:textColor="@color/color_texto"
+                android:textCursorDrawable="@drawable/cursor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnLogin"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@color/yelow_fondo"
+                android:background="@drawable/btn_background_orange"
                 android:text="Ingresar"
                 android:textColor="#ffffff"
                 app:cornerRadius="16dp"
@@ -104,13 +109,13 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@color/yelow_fondo_disabled"
+                android:background="@drawable/btn_background"
                 android:text="Registrate"
                 android:textColor="#434242"
                 app:cornerRadius="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button" />
+                app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_header"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:background="@color/color_marino"
+    android:clickable="true"
+    android:gravity="bottom"
+    android:padding="16dp"
+    android:theme="@style/AppTheme">
+
+    <ImageView
+        android:id="@+id/imgPerfil"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/bus" />
+
+    <TextView
+        android:id="@+id/txtHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:text="Bus Escolar"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium.Inverse"/>
+
+</LinearLayout>

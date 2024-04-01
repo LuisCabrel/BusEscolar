@@ -16,7 +16,13 @@
     <color name="colorInput">#f0f0f0</color>
     <color name="color_app_theme">#DC8620</color>
     <color name="color_palceholder">#979595</color>
-    <color name="color_texto">#777777</color>
+    <color name="color_texto">#2C3E50</color>
+    <color name="color_success">#14B473</color>
+    <color name="color_warning">#FDB100</color>
+    <color name="color_error">#E0314D</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_black">#000</color>
+    <color name="color_marino">#2d314f</color>
 
 
 </resources>

@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:shape="rectangle">
             <solid android:color="@color/colorInput" />
-            <solid android:textColor="@color/color_palceholder" />
+            <solid android:textColor="@color/color_texto" />
             <corners android:radius="6dp" />
             <stroke
                 android:width="1.5dp"

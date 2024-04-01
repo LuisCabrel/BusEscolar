@@ -15,7 +15,7 @@
         <item name="android:textColorHint">@color/color_palceholder</item>
     </style>
 
-    <style name="Theme.BusEscolar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.BusEscolar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yelow_fondo</item>
         <item name="colorPrimaryVariant">@color/yelow_fondo</item>
@@ -29,5 +29,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:textColorHint">@color/color_palceholder</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">false</item>
     </style>
 </resources>
