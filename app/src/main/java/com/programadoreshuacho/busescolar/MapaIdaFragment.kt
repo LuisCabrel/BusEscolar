@@ -1,17 +1,28 @@
 package com.programadoreshuacho.busescolar
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.gms.common.util.CollectionUtils.listOf
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,6 +30,17 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places
+//import com.google.android.libraries.places.api.model.LocationBias
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.maps.FindPlaceFromTextRequest
+import java.io.IOException
+
 
 /*import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -34,10 +56,13 @@ import com.programadoreshuacho.busescolar.Adapter.PlacesAdapter
  */
 
 class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
+//class MapaIdaFragment : Fragment(), OnMapReadyCallback{
     private lateinit var map: GoogleMap
     private var LongIni: String?=""
     private var LatIni: String?=""
-    //private lateinit var placesClient: PlacesClient
+    private lateinit var placesClient: PlacesClient
+    //private SearchView mapSearchView;
+
 
     /*var googleMap: GoogleMap? = null
     lateinit var placesAdapter: PlacesAdapter
@@ -63,12 +88,18 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
     companion object {
         const val LOCATION_REQUEST_CODE = 100
         const val REQUEST_CODE_LOCATION = 0
+        private const val AUTOCOMPLETE_REQUEST_CODE = 123
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        val rootView= inflater.inflate(R.layout.fragment_mapa_ida, container, false)
+        val view= inflater.inflate(R.layout.fragment_mapa_ida, container, false)
+        val apiKey = getStringFromResource(requireContext(), R.string.google_maps_key)
+        Places.initialize(requireContext(), apiKey)
+        placesClient = Places.createClient(requireContext())
         createMapFragment()
         // autocompleta direccion
       /*  mGeoDataClient = Places.getGeoDataClient(this, null);
@@ -144,9 +175,107 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         }
         */
 
-        return rootView
+        //*************/
+        /*
+        // Initialize the AutocompleteSupportFragment.
+        //val autocompleteFragment =supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as? AutocompleteSupportFragment
+        // Specify the types of place data to return.
+        Log.i("TAG002", autocompleteFragment.toString())
+        autocompleteFragment?.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS))
+        autocompleteFragment?.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                // TODO: Get info about the selected place.
+                Log.i("TAG01", "Place: ${place.name}, ${place.id}")
+            }
+
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+                Log.i("TAG02", "An error occurred: $status")
+            }
+        })
+        */
+
+
+
+
+        val fields = listOf(Place.Field.ID, Place.Field.NAME)
+        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+            .build(requireContext())
+        startAutocomplete.launch(intent)
+
+        // Inicializar vistas
+        /*val editTextDireccion = view.findViewById<EditText>(R.id.txtIdaDireccion)
+        val buttonBuscar = view.findViewById<Button>(R.id.btnBuscarIda)
+
+        // Configurar clic en el botón de búsqueda
+        buttonBuscar.setOnClickListener {
+            val direccion = editTextDireccion.text.toString()
+            buscarUbicacion(direccion)
+        }*/
+
+        var mapSearchView = view.findViewById<SearchView>(R.id.mapSearch)
+
+        mapSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val location = mapSearchView.query.toString()
+                var addressList: List<Address>? = null
+                if (!location.isNullOrEmpty()) {
+                    val geocoder = Geocoder(context)
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                    val address = addressList?.get(0)
+                    val latlng = LatLng(address!!.latitude, address.longitude)
+                    Log.e("address  --> ",address.toString())
+                    Log.e("latitude  --> ",address.latitude.toString())
+                    Log.e("longitude  --> ",address.longitude.toString())
+                    map.addMarker(MarkerOptions().position(latlng).title(location))
+                    map.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(latlng, 18f),
+                            4000,
+                            null
+                    )
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
+        return view
 
     }
+
+    private fun getStringFromResource(context: Context, @StringRes resId: Int): String {
+        return try {
+            context.getString(resId)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
+    }
+
+    private val startAutocomplete = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        //Log.e("TAG0001", result.toString())
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            Log.e("TAG001", intent.toString())
+            if (intent != null) {
+                val place = Autocomplete.getPlaceFromIntent(intent)
+                Log.i("TAG1", "Place: ${place.name}, ${place.id}")
+            }
+        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+            // The user canceled the operation.
+            Log.i("TAG2", "User canceled autocomplete")
+        }
+    }
+
 
     private fun createMapFragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragmentMap) as SupportMapFragment
@@ -160,18 +289,21 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         createMarker()
         map.setOnMyLocationClickListener(this)
         map.setOnMyLocationButtonClickListener(this)
+        map.uiSettings.isZoomControlsEnabled = true
 
 
     }
 
+
+
     private fun createMarker() {
         map.setOnMyLocationClickListener(this)
-        val favoritePlace = LatLng(28.044195,-16.5363842)
-        map.addMarker(MarkerOptions().position(favoritePlace).title("Mi playa favorita!"))
+        val favoritePlace = LatLng(-12.0450845, -77.0301167)
+        map.addMarker(MarkerOptions().position(favoritePlace).title("Mi Peru!"))
         map.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(favoritePlace, 18f),
-                4000,
-                null
+            CameraUpdateFactory.newLatLngZoom(favoritePlace, 30f),
+            4000,
+            null
         )
     }
 
@@ -191,16 +323,22 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         }
     }
 
-
-
     private fun requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
-            Toast.makeText(requireContext(), "Ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )) {
+            Toast.makeText(
+                requireContext(),
+                "Ve a ajustes y acepta los permisos",
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
-            ActivityCompat.requestPermissions(requireActivity(),
+            ActivityCompat.requestPermissions(
+                requireActivity(),
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_CODE_LOCATION)
+                REQUEST_CODE_LOCATION
+            )
         }
     }
 
@@ -211,10 +349,14 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
     ) {
         when(requestCode){
             REQUEST_CODE_LOCATION -> {
-                if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     map.isMyLocationEnabled = true
                 } else {
-                    Toast.makeText(requireContext(), "Para activar la localización ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Para activar la localización ve a ajustes y acepta los permisos",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -222,7 +364,7 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
 
     override fun onMyLocationButtonClick(): Boolean {
         Toast.makeText(requireContext(), "Boton pulsado", Toast.LENGTH_SHORT).show()
-        Log.e("MyLocationButtonClick: ","ENTRA A onMyLocationButtonClick")
+        Log.e("MyLocationButtonClick: ", "ENTRA A onMyLocationButtonClick")
         //colocar true si no quieres que te lleve a tu ubicacion
         return false
     }
@@ -233,8 +375,15 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         if (::map.isInitialized) {
             if (!isLocationPermissionGranted()) {
                 map.isMyLocationEnabled = false
-                Log.e("onResume: ","Para activar la localización ve a ajustes y acepta los permisos")
-                Toast.makeText(requireContext(), "Para activar la localización ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+                Log.e(
+                    "onResume: ",
+                    "Para activar la localización ve a ajustes y acepta los permisos"
+                )
+                Toast.makeText(
+                    requireContext(),
+                    "Para activar la localización ve a ajustes y acepta los permisos",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -242,11 +391,17 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
     override fun onMyLocationClick(p0: Location) {
         LongIni = p0.longitude.toString()
         LatIni = p0.latitude.toString()
-        Log.e("LONGITUD: ",LongIni.toString())
-        Log.e("LATITUD: ",LatIni.toString())
-        Toast.makeText(requireContext(), "Estás en ${p0.latitude}, ${p0.longitude}", Toast.LENGTH_SHORT).show()
+        Log.e("LONGITUD: ", LongIni.toString())
+        Log.e("LATITUD: ", LatIni.toString())
+        Toast.makeText(
+            requireContext(),
+            "Estás en ${p0.latitude}, ${p0.longitude}",
+            Toast.LENGTH_SHORT
+        ).show()
 
     }
+
+
 
     //METODOS PARA BUSCAR DIRECCION
     //https://www.youtube.com/watch?v=QcyaICJ9CNA
@@ -267,16 +422,18 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
             buscarUbicacion(direccion)
         }
     }
-
-    private fun buscarUbicacion(direccion: String) {
+*/
+    @SuppressLint("MissingPermission")
+    /*private fun buscarUbicacion(direccion: String) {
         // Definir los campos de la ubicación que deseas obtener
-        val fields = listOf(Field.LAT_LNG, Field.NAME)
+        val fields = listOf(Place.Field.LAT_LNG, Place.Field.NAME,Place.Field.ADDRESS)
 
         // Crear una solicitud para buscar el lugar
-        val request = FindPlaceRequest.newInstance(direccion, fields)
+        Log.e("direccion",direccion.toString())
+        val request = FindCurrentPlaceRequest.newInstance(direccion, fields)
 
         // Ejecutar la solicitud de búsqueda
-        placesClient.findPlace(request).addOnSuccessListener { response ->
+        placesClient.findCurrentPlace(request).addOnSuccessListener { response ->
             val place = response.placeLikelihoods[0].place
             val latLng = place.latLng
             if (latLng != null) {
@@ -289,13 +446,48 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         }.addOnFailureListener { exception ->
             Toast.makeText(requireContext(), "Error al buscar la ubicación: ${exception.message}", Toast.LENGTH_SHORT).show()
         }
+    }*/
+
+    /*private fun buscarUbicacion(direccion: String) {
+        // Obtener las coordenadas de latitud y longitud a partir de la dirección
+        val latLng = obtenerCoordenadasDesdeDireccion(direccion)
+        if (latLng != null) {
+            // Definir los campos de la ubicación que deseas obtener
+            val fields = listOf(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)
+
+            // Crear una solicitud para buscar el lugar con bias en la ubicación obtenida
+            val bounds = RectangularBounds.newInstance(latLng, latLng)
+            val bias = FindPlaceFromTextRequest.LocationBias.bounds(bounds)
+            val request = FindCurrentPlaceRequest.newInstance(fields).locationBias(bias)
+
+            // Ejecutar la solicitud de búsqueda
+            placesClient.findCurrentPlace(request)
+                .addOnSuccessListener { response ->
+                    // Manejar la respuesta exitosa aquí
+                }
+                .addOnFailureListener { exception ->
+                    // Manejar la falla aquí
+                }
+        } else {
+            // Mostrar mensaje de error indicando que la dirección no es válida
+        }
+    }*/
+
+    private fun obtenerCoordenadasDesdeDireccion(direccion: String): LatLng? {
+        val geocoder = Geocoder(requireContext()) // Si estás en un fragmento, utiliza requireContext(), si estás en una actividad, utiliza this
+        val resultados = geocoder.getFromLocationName(direccion, 1)
+        return if (resultados.isNotEmpty()) {
+            LatLng(resultados[0].latitude, resultados[0].longitude)
+        } else {
+            null
+        }
     }
 
     private fun mostrarUbicacion(latitud: Double, longitud: Double) {
         val mensaje = "Latitud: $latitud, Longitud: $longitud"
         Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show()
     }
-    */
+
 
 
     /*
