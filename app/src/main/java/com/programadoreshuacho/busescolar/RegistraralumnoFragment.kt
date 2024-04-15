@@ -1,5 +1,6 @@
 package com.programadoreshuacho.busescolar
 
+import android.animation.LayoutTransition
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -16,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.cardview.widget.CardView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -34,6 +36,7 @@ class RegistraralumnoFragment : Fragment() {
     private var codigo: String?=""
     private var idPadre: String?=""
     private var imagenbaseperfil: String? = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,11 +68,34 @@ class RegistraralumnoFragment : Fragment() {
 
         }
 
+        /*card collapse*/
+        var detalleTexto = view.findViewById<TextView>(R.id.detalleTexto)
+        var layout = view.findViewById<LinearLayout>(R.id.layoutIda)
+        var expandIda = view.findViewById<CardView>(R.id.cardIdaExpandable)
+        layout.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        expandIda.setOnClickListener {
+            val v = if (detalleTexto.visibility == View.GONE) View.VISIBLE else View.GONE
+            detalleTexto.visibility = v
+        }
+        /*fin card collapse*/
+
         val txtDireccionRecojoAlumno = view.findViewById<EditText>(R.id.txtDireccionRecojoAlumno)
         txtDireccionRecojoAlumno.setOnClickListener {
             // Aquí puedes llevar a cabo la acción que desees, como levantar un fragment
 
             val fragmento2 = MapaIdaFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frameContainer, fragmento2)
+            transaction.addToBackStack(null)
+            transaction.commit()
+
+        }
+
+        val txtDireccionColegioAlumno = view.findViewById<EditText>(R.id.txtDireccionDestinoAlumno)
+        txtDireccionColegioAlumno.setOnClickListener {
+            // Aquí puedes llevar a cabo la acción que desees, como levantar un fragment
+
+            val fragmento2 = MapaColegioFragment()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.frameContainer, fragmento2)
             transaction.addToBackStack(null)

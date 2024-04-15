@@ -42,20 +42,9 @@ import com.google.maps.FindPlaceFromTextRequest
 import java.io.IOException
 
 
-/*import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
-import com.google.android.libraries.places.api.net.FindPlaceRequest
-import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.android.libraries.places.widget.model.Place.Field
-import com.programadoreshuacho.busescolar.Adapter.PlacesAdapter
 
- */
 
-class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
+class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 //class MapaIdaFragment : Fragment(), OnMapReadyCallback{
     private lateinit var map: GoogleMap
     private var LongIni: String?=""
@@ -97,9 +86,9 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
     ): View? {
         // Inflate the layout for this fragment
         val view= inflater.inflate(R.layout.fragment_mapa_ida, container, false)
-        val apiKey = getStringFromResource(requireContext(), R.string.google_maps_key)
-        Places.initialize(requireContext(), apiKey)
-        placesClient = Places.createClient(requireContext())
+        //val apiKey = getStringFromResource(requireContext(), R.string.google_maps_key)
+        //Places.initialize(requireContext(), apiKey)
+        //placesClient = Places.createClient(requireContext())
         createMapFragment()
         // autocompleta direccion
       /*  mGeoDataClient = Places.getGeoDataClient(this, null);
@@ -199,10 +188,10 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
 
 
 
-        val fields = listOf(Place.Field.ID, Place.Field.NAME)
-        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-            .build(requireContext())
-        startAutocomplete.launch(intent)
+        //val fields = listOf(Place.Field.ID, Place.Field.NAME)
+        //val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+         //   .build(requireContext())
+        //startAutocomplete.launch(intent)
 
         // Inicializar vistas
         /*val editTextDireccion = view.findViewById<EditText>(R.id.txtIdaDireccion)
@@ -227,18 +216,28 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
-
+                    map.clear()
                     val address = addressList?.get(0)
                     val latlng = LatLng(address!!.latitude, address.longitude)
                     Log.e("address  --> ",address.toString())
                     Log.e("latitude  --> ",address.latitude.toString())
                     Log.e("longitude  --> ",address.longitude.toString())
+                    Log.e("mapSearchView  --> ",mapSearchView.query.toString())
                     map.addMarker(MarkerOptions().position(latlng).title(location))
                     map.animateCamera(
                             CameraUpdateFactory.newLatLngZoom(latlng, 18f),
                             4000,
                             null
                     )
+
+                    var sessionLocalizacionIda = requireActivity().getSharedPreferences("sessionLocalizacionDireccion",Context.MODE_PRIVATE)
+                    var editor = sessionLocalizacionIda.edit()
+                    editor.clear()
+                    editor.putString("address",address.toString())
+                    editor.putString("latitud",address.latitude.toString())
+                    editor.putString("longitud",address.longitude.toString())
+                    editor.putString("direccion",mapSearchView.query.toString())
+                    editor.commit()
                 }
                 return false
             }
@@ -289,6 +288,8 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         createMarker()
         map.setOnMyLocationClickListener(this)
         map.setOnMyLocationButtonClickListener(this)
+        map.setOnMapClickListener(this)
+        map.setOnMapLongClickListener(this)
         map.uiSettings.isZoomControlsEnabled = true
 
 
@@ -301,7 +302,7 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         val favoritePlace = LatLng(-12.0450845, -77.0301167)
         map.addMarker(MarkerOptions().position(favoritePlace).title("Mi Peru!"))
         map.animateCamera(
-            CameraUpdateFactory.newLatLngZoom(favoritePlace, 30f),
+            CameraUpdateFactory.newLatLngZoom(favoritePlace, 10f),
             4000,
             null
         )
@@ -401,6 +402,22 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
 
     }
 
+    override fun onMapClick(p0: LatLng) {
+        Log.e("latitude  nuevamc --> ",p0.latitude.toString())
+        Log.e("longitude nuevamc --> ",p0.longitude.toString())
+        map.clear()
+        val nuevaUbicacion = LatLng(p0.latitude, p0.longitude)
+        map.addMarker(MarkerOptions().position(nuevaUbicacion).title(""))
+    }
+
+    override fun onMapLongClick(p0: LatLng) {
+        Log.e("latitude  nuevamlc --> ",p0.latitude.toString())
+        Log.e("longitude nuevamlc --> ",p0.longitude.toString())
+        map.clear()
+        val nuevaUbicacion = LatLng(p0.latitude, p0.longitude)
+        map.addMarker(MarkerOptions().position(nuevaUbicacion).title(""))
+    }
+
 
 
     //METODOS PARA BUSCAR DIRECCION
@@ -423,7 +440,7 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         }
     }
 */
-    @SuppressLint("MissingPermission")
+    //@SuppressLint("MissingPermission")
     /*private fun buscarUbicacion(direccion: String) {
         // Definir los campos de la ubicación que deseas obtener
         val fields = listOf(Place.Field.LAT_LNG, Place.Field.NAME,Place.Field.ADDRESS)
@@ -473,7 +490,7 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         }
     }*/
 
-    private fun obtenerCoordenadasDesdeDireccion(direccion: String): LatLng? {
+  /*  private fun obtenerCoordenadasDesdeDireccion(direccion: String): LatLng? {
         val geocoder = Geocoder(requireContext()) // Si estás en un fragmento, utiliza requireContext(), si estás en una actividad, utiliza this
         val resultados = geocoder.getFromLocationName(direccion, 1)
         return if (resultados.isNotEmpty()) {
@@ -487,6 +504,7 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         val mensaje = "Latitud: $latitud, Longitud: $longitud"
         Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show()
     }
+    */
 
 
 

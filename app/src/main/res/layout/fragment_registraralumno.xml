@@ -100,6 +100,7 @@
                                 android:hint="Nombres Alumno"
                                 android:inputType="textPersonName"
                                 android:paddingLeft="5dp"
+                                android:textCursorDrawable="@drawable/focus_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -116,6 +117,7 @@
                                 android:hint="Apellido Alumno"
                                 android:inputType="textPersonName"
                                 android:paddingLeft="5dp"
+                                android:textCursorDrawable="@drawable/focus_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/txtNombreAlumno" />
@@ -149,6 +151,7 @@
                                 android:hint="# Documento"
                                 android:inputType="number"
                                 android:paddingLeft="5dp"
+                                android:textCursorDrawable="@drawable/focus_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/cbo_tipoDocAlumno" />
@@ -161,10 +164,14 @@
                                 android:layout_marginTop="10dp"
                                 android:layout_marginEnd="10dp"
                                 android:background="@drawable/edit_text_background"
+                                android:clickable="false"
                                 android:ems="10"
                                 android:hint="Dirección Recojo"
                                 android:inputType="textPersonName"
+                                android:linksClickable="false"
+                                android:longClickable="false"
                                 android:paddingLeft="5dp"
+                                android:textCursorDrawable="@drawable/focus_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/txtDocumentoAlumno" />
@@ -181,6 +188,7 @@
                                 android:hint="Dirección Colegio"
                                 android:inputType="textPersonName"
                                 android:paddingLeft="5dp"
+                                android:textCursorDrawable="@drawable/focus_text"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/txtDireccionRecojoAlumno" />
@@ -218,6 +226,51 @@
                                 app:srcCompat="@drawable/ico_perfil" />
 
 
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/cardIdaExpandable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:ems="1"
+                                android:background="@drawable/card_borde_input"
+                                app:cardBackgroundColor="@color/colorInput"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imgAlumno">
+                                <LinearLayout
+                                    android:id="@+id/layoutIda"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:animateLayoutChanges="true"
+                                    android:padding="4dp"
+                                    android:layout_marginTop="6dp">
+                                    <TextView
+                                        android:text="Dirección Ida"
+                                        android:textSize="18dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+                                    <TextView
+                                        android:id="@+id/detalleTexto"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:textSize="12dp"
+                                        android:visibility="gone"
+                                        android:text="how to make expandable card view in android studio,
+how to create an  expandable cardview in android,
+implementing a collapsible view using a card view,
+expand and collapse cardview,
+expanding card view with a textview on click,
+how to make a cardview expand by clicking it,
+dynamic card view in android,
+android expandable view in android ,
+android expandable view,
+expandable view in android studio, "/>
+
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
                             <Button
                                 android:id="@+id/btnGuardarAlumno"
                                 android:layout_width="0dp"
@@ -233,7 +286,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/imgAlumno"
+                                app:layout_constraintTop_toBottomOf="@+id/cardIdaExpandable"
                                 app:layout_constraintVertical_bias="0.0" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>

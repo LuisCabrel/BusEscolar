@@ -13,76 +13,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:background="@color/yelow_fondo"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/txtIdaDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Ingrese Dirección"
-                android:inputType="textPersonName"
-                android:textColor="@color/color_white" />
-
-            <Button
-                android:id="@+id/btnBuscarIda"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
-
-            <EditText
-                android:id="@+id/txtIdaLatitud"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Latitud" />
-
-            <EditText
-                android:id="@+id/txtIdaLongitud"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Longitud" />
-
-            <AutoCompleteTextView
-                android:id="@+id/enter_place"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="7dp"
-                android:paddingRight="7dp"
-                android:text="AutoCompleteTextView" />
-
-            <fragment
-                android:id="@+id/autocomplete_fragment"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:context=".MapaIdaFragment" />
-            <SearchView
-                android:id="@+id/mapSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:queryHint="Search"
-                android:iconifiedByDefault="false"
-                android:elevation="5dp"
-                android:background="@drawable/bg_search"
-                />
-
-
             <fragment
                 android:id="@+id/fragmentMap"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".MapaIdaFragment"/>
+                tools:context=".MapaIdaFragment">
+
+                <SearchView
+                    android:id="@+id/mapSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_search"
+                    android:elevation="5dp"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="Search"
+                    android:textCursorDrawable="@drawable/focus_text"
+                    />
+            </fragment>
 
         </LinearLayout>
 
