@@ -284,18 +284,13 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         enableMyLocation()
-
         createMarker()
         map.setOnMyLocationClickListener(this)
         map.setOnMyLocationButtonClickListener(this)
         map.setOnMapClickListener(this)
         map.setOnMapLongClickListener(this)
         map.uiSettings.isZoomControlsEnabled = true
-
-
     }
-
-
 
     private fun createMarker() {
         map.setOnMyLocationClickListener(this)

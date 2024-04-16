@@ -156,7 +156,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/cbo_tipoDocAlumno" />
 
-                            <EditText
+                     <!--       <EditText
                                 android:id="@+id/txtDireccionRecojoAlumno"
                                 android:layout_width="0dp"
                                 android:layout_height="45dp"
@@ -175,23 +175,8 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/txtDocumentoAlumno" />
+-->
 
-                            <EditText
-                                android:id="@+id/txtDireccionDestinoAlumno"
-                                android:layout_width="0dp"
-                                android:layout_height="45dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:background="@drawable/edit_text_background"
-                                android:ems="10"
-                                android:hint="Dirección Colegio"
-                                android:inputType="textPersonName"
-                                android:paddingLeft="5dp"
-                                android:textCursorDrawable="@drawable/focus_text"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/txtDireccionRecojoAlumno" />
 
 
                             <Button
@@ -209,7 +194,7 @@
                                 app:cornerRadius="16dp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/txtDireccionDestinoAlumno" />
+                                app:layout_constraintTop_toBottomOf="@+id/txtDocumentoAlumno" />
 
                             <ImageView
                                 android:id="@+id/imgAlumno"
@@ -225,48 +210,147 @@
                                 app:layout_constraintTop_toBottomOf="@+id/btnFotoAlumno"
                                 app:srcCompat="@drawable/ico_perfil" />
 
-
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/cardIdaExpandable"
+                                android:id="@+id/cardRecojoExpandable"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:ems="1"
-                                android:background="@drawable/card_borde_input"
-                                app:cardBackgroundColor="@color/colorInput"
+                                app:cardElevation="0dp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/imgAlumno">
                                 <LinearLayout
-                                    android:id="@+id/layoutIda"
+                                    android:id="@+id/layoutRecojo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
                                     android:animateLayoutChanges="true"
                                     android:padding="4dp"
-                                    android:layout_marginTop="6dp">
+                                    android:layout_marginTop="6dp"
+                                    android:background="@drawable/card_borde_input">
                                     <TextView
-                                        android:text="Dirección Ida"
+                                        android:text="Dirección Recojo"
                                         android:textSize="18dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"/>
-                                    <TextView
-                                        android:id="@+id/detalleTexto"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginBottom="4dp"/>
+
+                                    <LinearLayout
+                                        android:id="@+id/layoutFragmentRecojo"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:textSize="12dp"
-                                        android:visibility="gone"
-                                        android:text="how to make expandable card view in android studio,
-how to create an  expandable cardview in android,
-implementing a collapsible view using a card view,
-expand and collapse cardview,
-expanding card view with a textview on click,
-how to make a cardview expand by clicking it,
-dynamic card view in android,
-android expandable view in android ,
-android expandable view,
-expandable view in android studio, "/>
+                                        android:layout_marginTop="10dp"
+                                        android:background="@color/yelow_fondo"
+                                        android:orientation="vertical"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        android:visibility="gone">
+
+                                        <fragment
+                                            android:id="@+id/fragmentMap"
+                                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="300dp"
+                                            tools:context=".RegistraralumnoFragment">
+
+                                            <SearchView
+                                                android:id="@+id/mapSearchRecojo"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="10dp"
+                                                android:background="@drawable/bg_search"
+                                                android:elevation="5dp"
+                                                android:iconifiedByDefault="false"
+                                                android:queryHint="Search"
+                                                android:textCursorDrawable="@drawable/focus_text"
+                                                />
+                                        </fragment>
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <EditText
+                                android:id="@+id/txtNombreColegioAlumno"
+                                android:layout_width="0dp"
+                                android:layout_height="45dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@drawable/edit_text_background"
+                                android:ems="10"
+                                android:hint="Nombre Colegio"
+                                android:inputType="textPersonName"
+                                android:paddingLeft="5dp"
+                                android:textCursorDrawable="@drawable/focus_text"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/cardRecojoExpandable" />
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/cardColegioExpandable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtNombreColegioAlumno">
+                                <LinearLayout
+                                    android:id="@+id/layoutColegio"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:animateLayoutChanges="true"
+                                    android:padding="4dp"
+                                    android:layout_marginTop="6dp"
+                                    android:background="@drawable/card_borde_input">
+                                    <TextView
+                                        android:text="Dirección Colegio"
+                                        android:textSize="18dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginBottom="4dp"/>
+
+                                    <LinearLayout
+                                        android:id="@+id/layoutFragmentColegio"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginTop="10dp"
+                                        android:background="@color/yelow_fondo"
+                                        android:orientation="vertical"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        android:visibility="gone">
+
+                                        <fragment
+                                            android:id="@+id/fragmentMapColegio"
+                                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="300dp"
+                                            tools:context=".RegistraralumnoFragment">
+
+                                            <SearchView
+                                                android:id="@+id/mapSearchColegio"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="10dp"
+                                                android:background="@drawable/bg_search"
+                                                android:elevation="5dp"
+                                                android:iconifiedByDefault="false"
+                                                android:queryHint="Search"
+                                                android:textCursorDrawable="@drawable/focus_text"
+                                                />
+                                        </fragment>
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
@@ -286,7 +370,7 @@ expandable view in android studio, "/>
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/cardIdaExpandable"
+                                app:layout_constraintTop_toBottomOf="@+id/cardColegioExpandable"
                                 app:layout_constraintVertical_bias="0.0" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
