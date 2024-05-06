@@ -1,4 +1,4 @@
-package com.programadoreshuacho.busescolar
+package com.programadoreshuacho.busescolar.Conductor
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -14,6 +14,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
+import com.programadoreshuacho.busescolar.R
 import com.programadoreshuacho.busescolar.R.id.nav_header
 
 

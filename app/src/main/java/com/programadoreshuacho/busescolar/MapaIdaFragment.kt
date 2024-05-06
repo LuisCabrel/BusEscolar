@@ -13,10 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.SearchView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
@@ -39,6 +36,8 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.maps.FindPlaceFromTextRequest
+import com.programadoreshuacho.busescolar.Clases.ListaLocalizacion
+import com.programadoreshuacho.busescolar.Clases.ListaLocalizacionProvider
 import java.io.IOException
 
 
@@ -50,6 +49,7 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
     private var LongIni: String?=""
     private var LatIni: String?=""
     private lateinit var placesClient: PlacesClient
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     //private SearchView mapSearchView;
 
 
@@ -247,6 +247,15 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
             }
         })
 
+        val btnAtras = view.findViewById<TextView>(R.id.btnAtras)
+        btnAtras.setOnClickListener {
+            val fragmento2 = RutaidaFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frameContainer, fragmento2)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
         return view
 
     }
@@ -283,6 +292,7 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+        onMyLocationButtonClick()
         enableMyLocation()
         createMarker()
         map.setOnMyLocationClickListener(this)
@@ -294,13 +304,24 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
 
     private fun createMarker() {
         map.setOnMyLocationClickListener(this)
-        val favoritePlace = LatLng(-12.0450845, -77.0301167)
+        val favoritePlace = LatLng(LatIni?.toDoubleOrNull() ?: 0.0, LongIni?.toDoubleOrNull() ?: 0.0)
         map.addMarker(MarkerOptions().position(favoritePlace).title("Mi Peru!"))
+
+
+        for (ubicacion in ListaLocalizacionProvider.listaLocalizacionList) {
+            //Log.e("datalist " ,ubicacion)
+            val latitud = ubicacion.latitud.toDoubleOrNull() ?: 0.0
+            val longitud = ubicacion.longitud.toDoubleOrNull() ?: 0.0
+            val latLng = LatLng(latitud, longitud)
+            map.addMarker(MarkerOptions().position(latLng).title(ubicacion.nombre))
+        }
+
         map.animateCamera(
-            CameraUpdateFactory.newLatLngZoom(favoritePlace, 10f),
-            4000,
-            null
+                CameraUpdateFactory.newLatLngZoom(favoritePlace, 15f),
+                4000,
+                null
         )
+
     }
 
     private fun isLocationPermissionGranted(): Boolean {
@@ -413,243 +434,5 @@ class MapaIdaFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationBu
         map.addMarker(MarkerOptions().position(nuevaUbicacion).title(""))
     }
 
-
-
-    //METODOS PARA BUSCAR DIRECCION
-    //https://www.youtube.com/watch?v=QcyaICJ9CNA
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Inicializar Places API
-        Places.initialize(requireContext(), "AIzaSyA5Fsqqadin4ByFxxPM_KsQlFJm3s5jPQ4")
-        placesClient = Places.createClient(this)
-
-        // Inicializar vistas
-        val editTextDireccion = view.findViewById<EditText>(R.id.txtIdaDireccion)
-        val buttonBuscar: Button = view.findViewById(R.id.button_buscar)
-
-        // Configurar clic en el botón de búsqueda
-        buttonBuscar.setOnClickListener {
-            val direccion = editTextDireccion.text.toString()
-            buscarUbicacion(direccion)
-        }
-    }
-*/
-    //@SuppressLint("MissingPermission")
-    /*private fun buscarUbicacion(direccion: String) {
-        // Definir los campos de la ubicación que deseas obtener
-        val fields = listOf(Place.Field.LAT_LNG, Place.Field.NAME,Place.Field.ADDRESS)
-
-        // Crear una solicitud para buscar el lugar
-        Log.e("direccion",direccion.toString())
-        val request = FindCurrentPlaceRequest.newInstance(direccion, fields)
-
-        // Ejecutar la solicitud de búsqueda
-        placesClient.findCurrentPlace(request).addOnSuccessListener { response ->
-            val place = response.placeLikelihoods[0].place
-            val latLng = place.latLng
-            if (latLng != null) {
-                val latitud = latLng.latitude
-                val longitud = latLng.longitude
-                mostrarUbicacion(latitud, longitud)
-            } else {
-                Toast.makeText(requireContext(), "No se pudo encontrar la ubicación para la dirección: $direccion", Toast.LENGTH_SHORT).show()
-            }
-        }.addOnFailureListener { exception ->
-            Toast.makeText(requireContext(), "Error al buscar la ubicación: ${exception.message}", Toast.LENGTH_SHORT).show()
-        }
-    }*/
-
-    /*private fun buscarUbicacion(direccion: String) {
-        // Obtener las coordenadas de latitud y longitud a partir de la dirección
-        val latLng = obtenerCoordenadasDesdeDireccion(direccion)
-        if (latLng != null) {
-            // Definir los campos de la ubicación que deseas obtener
-            val fields = listOf(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)
-
-            // Crear una solicitud para buscar el lugar con bias en la ubicación obtenida
-            val bounds = RectangularBounds.newInstance(latLng, latLng)
-            val bias = FindPlaceFromTextRequest.LocationBias.bounds(bounds)
-            val request = FindCurrentPlaceRequest.newInstance(fields).locationBias(bias)
-
-            // Ejecutar la solicitud de búsqueda
-            placesClient.findCurrentPlace(request)
-                .addOnSuccessListener { response ->
-                    // Manejar la respuesta exitosa aquí
-                }
-                .addOnFailureListener { exception ->
-                    // Manejar la falla aquí
-                }
-        } else {
-            // Mostrar mensaje de error indicando que la dirección no es válida
-        }
-    }*/
-
-  /*  private fun obtenerCoordenadasDesdeDireccion(direccion: String): LatLng? {
-        val geocoder = Geocoder(requireContext()) // Si estás en un fragmento, utiliza requireContext(), si estás en una actividad, utiliza this
-        val resultados = geocoder.getFromLocationName(direccion, 1)
-        return if (resultados.isNotEmpty()) {
-            LatLng(resultados[0].latitude, resultados[0].longitude)
-        } else {
-            null
-        }
-    }
-
-    private fun mostrarUbicacion(latitud: Double, longitud: Double) {
-        val mensaje = "Latitud: $latitud, Longitud: $longitud"
-        Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show()
-    }
-    */
-
-
-
-    /*
-    private fun assignToMap() {
-        googleMap?.clear()
-
-        val options = MarkerOptions()
-                .position(latLng)
-                .title("My Location")
-        googleMap?.apply {
-            addMarker(options)
-            moveCamera(CameraUpdateFactory.newLatLng(latLng))
-            animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-        }
-    }
-
-    private fun getLastLocation() {
-        try {
-            mFusedLocationClient.getLastLocation()?.addOnCompleteListener { task ->
-                if (task.isSuccessful && task.result != null) {
-                    location = task.getResult()
-                    latLng = LatLng(location.latitude, location.longitude)
-                    assignToMap()
-
-                } else {
-                    Log.w("Location", "Failed to get location.")
-                }
-            }
-        } catch (unlikely: SecurityException) {
-            Log.e("Location", "Lost location permission." + unlikely)
-        }
-
-    }
-
-    private fun initLocation() {
-        try {
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-            getLastLocation()
-            try {
-
-                mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
-                        .addOnSuccessListener(this, object : OnSuccessListener<LocationSettingsResponse> {
-                            override fun onSuccess(p0: LocationSettingsResponse?) {
-                                mFusedLocationClient.requestLocationUpdates(mLocationRequest,
-                                        mLocationCallback, Looper.myLooper());
-                            }
-
-                        }).addOnFailureListener(this, object : OnFailureListener {
-                            override fun onFailure(p0: java.lang.Exception) {
-                                val statusCode = (p0 as ApiException).getStatusCode();
-                                when (statusCode) {
-                                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                                        Log.i("Location", "Location settings are not satisfied. Attempting to upgrade " +
-                                                "location settings ");
-                                        try {
-                                            // Show the dialog by calling startResolutionForResult(), and check the
-                                            // result in onActivityResult().
-                                            val rae = p0 as ResolvableApiException
-                                            rae.startResolutionForResult(requireContext() as Activity, REQUEST_CHECK_SETTINGS);
-                                        } catch (sie: IntentSender.SendIntentException) {
-                                            Log.i("Location", "PendingIntent unable to execute request.");
-                                        }
-                                    }
-
-                                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE ->
-                                        Toast.makeText(requireContext(), "Location settings are inadequate, and cannot be \"+\n" +
-                                                "                                    \"fixed here. Fix in Settings.", Toast.LENGTH_LONG).show();
-
-
-                                }
-                            }
-
-                        })
-
-            } catch (unlikely: SecurityException) {
-                Log.e("Location", "Lost location permission. Could not request updates. " + unlikely)
-            }
-        } catch (e: SecurityException) {
-            e.printStackTrace()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-
-    override fun onMapReady(p0: GoogleMap?) {
-        Log.v("googleMap", "googleMap==" + googleMap)
-        googleMap = p0
-        googleMap?.setMapType(GoogleMap.MAP_TYPE_NORMAL)
-        googleMap?.getUiSettings()?.apply {
-            isZoomControlsEnabled = false
-            isCompassEnabled = true
-            isMyLocationButtonEnabled = true
-        }
-    }
-
-
-    /* To hide Keyboard */
-    fun hideKeyboard() {
-        try {
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_LOCATION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                initLocation()
-            } else {
-                Log.e("permisos","permiso denegado onRequestPermissionsResult")
-                //Toast.makeText(requireContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun checkPermissions(): Boolean {
-        val permissionState = ActivityCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-        return permissionState == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestPermissions() {
-        ActivityCompat.requestPermissions(
-                requireContext() as Activity,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION)
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (checkPermissions()) {
-            initLocation()
-        } else {
-            requestPermissions();
-        }
-    }
-
-    override fun onMyLocationButtonClick(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun onMyLocationClick(p0: Location) {
-        TODO("Not yet implemented")
-    }
-*/
 
 }
